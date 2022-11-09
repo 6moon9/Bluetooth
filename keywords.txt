@@ -1,0 +1,12 @@
+Bluetooth   KEYWORD1
+setup       KEYWORD2
+loop        KEYWORD2
+read        KEYWORD2
+print       KEYWORD2
+println     KEYWORD2
+message     KEYWORD3
+RXpin       KEYWORD3
+TXpin       KEYWORD3
+bauds       KEYWORD3
+serial      KEYWORD3
+json        KEYWORD3

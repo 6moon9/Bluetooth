@@ -6,7 +6,6 @@ class Bluetooth
 {
     public:
         Bluetooth(Stream *stream);
-        void setup(long bauds = 9600);
         bool receive();
         bool send();
         char read();

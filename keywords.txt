@@ -12,7 +12,6 @@ Bluetooth   KEYWORD1
 # Methods and Functions (KEYWORD2)
 #######################################
 
-setup       KEYWORD2
 receive     KEYWORD2
 send        KEYWORD2
 print       KEYWORD2

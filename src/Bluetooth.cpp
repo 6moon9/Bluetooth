@@ -8,14 +8,6 @@ Bluetooth::Bluetooth(Stream *stream)
 }
 
 /**
- * Setup the bluetooth communication
- */
-void Bluetooth::setup(long bauds = 9600)
-{
-    ///serial -> begin(bauds);
-}
-
-/**
  * Function to call each loop of the program
  * 
  * @return bool true if a complet new message is detected and false otherwise

@@ -1,19 +1,19 @@
 #include <Arduino.h>
 #include <SoftwareSerial.h>
-#include <Json.h>
+#include <ArduinoJson.h>
 
 class Bluetooth
 {
     public:
-        void setup();
-        bool loop();
+        Bluetooth(Stream *stream);
+        void setup(long bauds = 9600);
+        bool receive();
+        bool send();
         char read();
         void print(String data);
         void println(String data);
         String message;
-        uint8_t RXpin;
-        uint8_t TXpin;
-        long bauds = 9600;
-        SoftwareSerial serial;
-        Json json;
+        Stream *serial;
+        StaticJsonDocument<200> json;
+        DeserializationError lastError;
 };

@@ -2,26 +2,32 @@
 
 #include "Bluetooth.h"
 
-/**
- * Setup the bluetooth communication
- */
-void Bluetooth::setup()
+Bluetooth::Bluetooth(Stream *stream)
 {
-    serial.begin(bauds);
+    *serial = *stream;
 }
 
 /**
- * Function to call each loops of the program
+ * Setup the bluetooth communication
+ */
+void Bluetooth::setup(long bauds = 9600)
+{
+    ///serial -> begin(bauds);
+}
+
+/**
+ * Function to call each loop of the program
  * 
  * @return bool true if a complet new message is detected and false otherwise
  */
-bool Bluetooth::loop()
+bool Bluetooth::receive()
 {
-    while (serial.available() > 0)
+    while (serial -> available() > 0)
     {
         char c = read();
         if (c == '.')
         {
+            lastError = deserializeJson(json, *serial);
             return true;
         }
         else
@@ -33,13 +39,24 @@ bool Bluetooth::loop()
 }
 
 /**
+ * Function to send a message
+ * 
+ * @return bool true if the operation succeeds and false otherwise
+ */
+bool Bluetooth::send()
+{
+    serializeJson(json, *serial);
+    print(".");
+}
+
+/**
  * Function to read current char
  * 
  * @return char the current character in the bluetooth buffer
  */
 char Bluetooth::read()
 {
-    return serial.read();
+    return serial -> read();
 }
 
 /**
@@ -49,7 +66,7 @@ char Bluetooth::read()
  */
 void Bluetooth::print(String data)
 {
-    serial.print(data);
+    serial -> print(data);
 }
 
 /**
@@ -59,5 +76,5 @@ void Bluetooth::print(String data)
  */
 void Bluetooth::println(String data)
 {
-    serial.println(data);
+    serial -> println(data);
 }

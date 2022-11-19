@@ -8,6 +8,7 @@ class Bluetooth
         Bluetooth(Stream *stream);
         bool receive();
         bool send();
+        void empty();
         char read();
         void print(String data = "");
         void println(String data = "");

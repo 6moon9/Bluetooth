@@ -9,8 +9,8 @@ class Bluetooth
         bool receive();
         bool send();
         char read();
-        void print(String data);
-        void println(String data);
+        void print(String data = "");
+        void println(String data = "");
         String message;
         Stream *serial;
         StaticJsonDocument<200> json;

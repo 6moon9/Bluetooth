@@ -14,6 +14,8 @@ Bluetooth   KEYWORD1
 
 receive     KEYWORD2
 send        KEYWORD2
+empty       KEYWORD2
+read        KEYWORD2
 print       KEYWORD2
 println     KEYWORD2
 

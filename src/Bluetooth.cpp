@@ -4,7 +4,7 @@
 
 Bluetooth::Bluetooth(Stream *stream)
 {
-    *serial = *stream;
+    serial = stream;
 }
 
 /**
@@ -41,6 +41,11 @@ bool Bluetooth::send()
     print(".");
 }
 
+void Bluetooth::empty()
+{
+    while (serial -> available()) read();
+}
+
 /**
  * Function to read current char
  * 
@@ -56,7 +61,7 @@ char Bluetooth::read()
  * 
  * @param String `data` to print on the bluetooth
  */
-void Bluetooth::print(String data)
+void Bluetooth::print(String data = "")
 {
     serial -> print(data);
 }
@@ -66,7 +71,7 @@ void Bluetooth::print(String data)
  * 
  * @return char the current character in the bluetooth buffer
  */
-void Bluetooth::println(String data)
+void Bluetooth::println(String data = "")
 {
     serial -> println(data);
 }

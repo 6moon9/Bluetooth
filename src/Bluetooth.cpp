@@ -27,7 +27,7 @@ bool Bluetooth::receive()
             message += c;
         }
     }
-    return true;
+    return false;
 }
 
 /**

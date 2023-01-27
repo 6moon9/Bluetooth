@@ -14,6 +14,6 @@ class Bluetooth
         void println(String data = "");
         String message;
         Stream *serial;
-        StaticJsonDocument<200> json;
+        StaticJsonDocument<256> json;
         DeserializationError lastError;
 };

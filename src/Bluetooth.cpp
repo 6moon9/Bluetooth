@@ -1,77 +1,68 @@
-#include <Arduino.h>
-
 #include "Bluetooth.h"
 
-Bluetooth::Bluetooth(Stream *stream)
+Bluetooth::Bluetooth(Stream *iSerial, int *iSizes, int iNumValues)
 {
-    serial = stream;
+    serial = iSerial;
+    message.sizes = iSizes;
+    message.numValues = iNumValues;
+    memset(message.bytes, 0, sizeof(message.bytes));
+    memset(message.values, 0, sizeof(message.values));
 }
 
 /**
  * Function to call each loop of the program
- * 
+ *
  * @return bool true if a complet new message is detected and false otherwise
  */
 bool Bluetooth::receive()
 {
-    while (serial -> available() > 0)
+    if (serial->available() > 0)
     {
-        char c = read();
-        if (c == '.')
+        char c = serial->read();
+        Serial.println((int)c, HEX);
+        if (c == '\n')
         {
-            lastError = deserializeJson(json, *serial);
+            Intpressor::extract(message.bytes, message.sizes, message.numValues, message.values);
+            memset(message.bytes, 0, sizeof(message.bytes));
+            message.byteIndex = 0;
             return true;
         }
-        else
-        {
-            message += c;
-        }
+        message.bytes[message.byteIndex] = c;
+        message.byteIndex++;
     }
     return false;
 }
 
 /**
  * Function to send a message
- * 
+ *
  * @return bool true if the operation succeeds and false otherwise
  */
 bool Bluetooth::send()
 {
-    serializeJson(json, *serial);
-    print(".");
+    int numBytes = Intpressor::compress(message.values, message.sizes, message.numValues, message.bytes);
+    for (int i = 0; i < numBytes; i++)
+    {
+        serial->print(message.bytes[i]);
+    }
+    serial->println();
+    return true;
 }
 
 void Bluetooth::empty()
 {
-    while (serial -> available()) read();
+    while (serial->available())
+    {
+        serial->read();
+    }
 }
 
-/**
- * Function to read current char
- * 
- * @return char the current character in the bluetooth buffer
- */
-char Bluetooth::read()
+int Bluetooth::Message::get(int key)
 {
-    return serial -> read();
+    return values[key];
 }
 
-/**
- * Function to print data on bluetooth
- * 
- * @param String `data` to print on the bluetooth
- */
-void Bluetooth::print(String data = "")
+void Bluetooth::Message::set(int key, int value)
 {
-    serial -> print(data);
-}
-
-/**
- * Function to println data on bluetooth
- * 
- * @return char the current character in the bluetooth buffer
- */
-void Bluetooth::println(String data = "")
-{
-    serial -> println(data);
+    values[key] = value;
 }

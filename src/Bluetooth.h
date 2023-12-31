@@ -1,19 +1,28 @@
+#ifndef BLUETOOTH_H
+#define BLUETOOTH_H
+
+#include <Intpressor.h>
 #include <Arduino.h>
-#include <SoftwareSerial.h>
-#include <ArduinoJson.h>
 
 class Bluetooth
 {
+public:
+    Bluetooth(Stream *iSerial, int *iSizes, int iNumValues);
+    bool receive();
+    bool send();
+    void empty();
+    Stream *serial;
+    class Message
+    {
     public:
-        Bluetooth(Stream *stream);
-        bool receive();
-        bool send();
-        void empty();
-        char read();
-        void print(String data = "");
-        void println(String data = "");
-        String message;
-        Stream *serial;
-        StaticJsonDocument<300> json;
-        DeserializationError lastError;
+        int get(int key);
+        void set(int key, int value);
+        char bytes[Intpressor::MAX_VALUES];
+        int values[Intpressor::MAX_VALUES];
+        int *sizes;
+        int numValues;
+        int byteIndex = 0;
+    } message;
 };
+
+#endif // BLUETOOTH_H

@@ -19,7 +19,6 @@ bool Bluetooth::receive()
     if (serial->available() > 0)
     {
         char c = serial->read();
-        Serial.println((int)c, HEX);
         if (c == '\n')
         {
             Intpressor::extract(message.bytes, message.sizes, message.numValues, message.values);

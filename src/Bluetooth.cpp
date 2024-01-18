@@ -1,8 +1,9 @@
 #include "Bluetooth.h"
 
-Bluetooth::Bluetooth(Stream *iSerial, int *iSizes, int iNumValues)
+Bluetooth::Bluetooth(Stream *iSerial, int *iSizes, int iNumValues, char iEndChar)
 {
     serial = iSerial;
+    endChar = iEndChar;
     message.sizes = iSizes;
     message.numValues = iNumValues;
     memset(message.bytes, 0, sizeof(message.bytes));
@@ -19,15 +20,32 @@ bool Bluetooth::receive()
     if (serial->available() > 0)
     {
         char c = serial->read();
-        if (c == '\n')
+        Serial.print(c);
+        if (c == endChar)
         {
-            Intpressor::extract(message.bytes, message.sizes, message.numValues, message.values);
+            // for (int i = 0; i < message.byteIndex; i++)
+            // {
+            //     for (int j = 7; j >= 0; j--) {
+            //         Serial.print((message.bytes[i] >> j) & 1);
+            //     }
+            // }
+            // Serial.println();
+            // Intpressor::extract(message.bytes, message.sizes, message.numValues, message.values);
+            // for (int i = 0; i < message.numValues; i++)
+            // {
+            //     Serial.print(message.bytes[i]);
+            // }
+            // Serial.println();
+            Serial.println();
             memset(message.bytes, 0, sizeof(message.bytes));
             message.byteIndex = 0;
             return true;
         }
-        message.bytes[message.byteIndex] = c;
-        message.byteIndex++;
+        else
+        {
+            message.bytes[message.byteIndex] = c;
+            message.byteIndex++;
+        }
     }
     return false;
 }
@@ -44,7 +62,7 @@ bool Bluetooth::send()
     {
         serial->print(message.bytes[i]);
     }
-    serial->println();
+    serial->print(endChar);
     return true;
 }
 

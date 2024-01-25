@@ -25,7 +25,6 @@ public:
         int values[Intpressor::MAX_VALUES];
         int *sizes;
         int numValues;
-        int byteIndex = 0;
     } message;
 };
 

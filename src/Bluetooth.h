@@ -20,6 +20,7 @@ public:
     {
     public:
         int get(int key);
+        int get(int key, bool signit);
         void set(int key, int value);
         char bytes[Intpressor::MAX_VALUES];
         int values[Intpressor::MAX_VALUES];

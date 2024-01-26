@@ -22,13 +22,15 @@ bool Bluetooth::receive()
     while (serial->available() > 0)
     {
         char c = serial->read();
-        if (c == '.')
+        // Serial.print(c);
+        if (c == endChar)
         {
             lastError = deserializeJson(json, *serial);
             if (lastError == DeserializationError::Ok)
             {
                 Intpressor::extract(json["a"], message.sizes, message.numValues, message.values);
                 json.clear();
+                empty();
                 return true;
             }
         }
@@ -45,9 +47,12 @@ bool Bluetooth::send()
 {
     const int numBytes = Intpressor::compress(message.values, message.sizes, message.numValues, message.bytes);
     json["a"] = message.bytes;
+    // for (int i = 0; i < message.numValues; i++){
+    //     Serial.print(message.values[i]); Serial.print(" ");
+    // }
     serializeJson(json, *serial);
-    serializeJson(json, Serial);
-    Serial.println();
+    // serializeJson(json, Serial);
+    // Serial.println();
     json.clear();
     serial->print(endChar);
 }
@@ -63,6 +68,11 @@ void Bluetooth::empty()
 int Bluetooth::Message::get(int key)
 {
     return values[key];
+}
+
+int Bluetooth::Message::get(int key, bool signit)
+{
+    return values[key] - 255;
 }
 
 void Bluetooth::Message::set(int key, int value)

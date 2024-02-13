@@ -9,7 +9,7 @@ class Bluetooth
 {
 public:
     Bluetooth(Stream *iSerial, int *iSizes, int iNumValues, char iEndChar);
-    bool receive();
+    int receive();
     bool send();
     void empty();
     char endChar;

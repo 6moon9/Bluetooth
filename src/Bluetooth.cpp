@@ -17,7 +17,7 @@ Bluetooth::Bluetooth(Stream *iSerial, int *iSizes, int iNumValues, char iEndChar
  *
  * @return bool true if a complet new message is detected and false otherwise
  */
-bool Bluetooth::receive()
+int Bluetooth::receive()
 {
     while (serial->available() > 0)
     {
@@ -31,11 +31,12 @@ bool Bluetooth::receive()
                 Intpressor::extract(json["a"], message.sizes, message.numValues, message.values);
                 json.clear();
                 empty();
-                return true;
+                return 0;
             }
+            return 1;
         }
     }
-    return false;
+    return 2;
 }
 
 /**

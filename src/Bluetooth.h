@@ -14,7 +14,7 @@ public:
     void empty();
     char endChar;
     Stream *serial;
-    StaticJsonDocument<300> json;
+    StaticJsonDocument<50> json;
     DeserializationError lastError;
     class Message
     {

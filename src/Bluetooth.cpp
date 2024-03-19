@@ -22,7 +22,6 @@ int Bluetooth::receive()
     while (serial->available() > 0)
     {
         char c = serial->read();
-        // Serial.print(c);
         if (c == endChar)
         {
             lastError = deserializeJson(json, *serial);
@@ -48,14 +47,14 @@ bool Bluetooth::send()
 {
     const int numBytes = Intpressor::compress(message.values, message.sizes, message.numValues, message.bytes);
     json["a"] = message.bytes;
-    // for (int i = 0; i < message.numValues; i++){
-    //     Serial.print(message.values[i]); Serial.print(" ");
-    // }
     serializeJson(json, *serial);
-    // serializeJson(json, Serial);
-    // Serial.println();
     json.clear();
     serial->print(endChar);
+    // Intpressor::extract(json["a"].as<char*>(), message.sizes, message.numValues, message.values);
+    // for (int i = 0; i < message.numValues; i++){
+    //     Serial.print(message.values[i]); Serial.print(" | ");
+    // }
+    // Serial.println();
 }
 
 void Bluetooth::empty()
